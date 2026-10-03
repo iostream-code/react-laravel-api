@@ -1,46 +1,42 @@
-**!! Please note the following steps so that you can implement this project !!**
+# 🔗 React + Laravel API
 
-**1.  Clone Repository**
+Contoh arsitektur **SPA React yang terpisah dari backend REST API Laravel** — studi kasus CRUD post sederhana.
 
-      git clone https://github.com/iostream-code/react-laravel-10-api.git
+```
+react-laravel-10-api/
+├── laravel-10-api/    # Backend: REST API (Laravel 12)
+└── react-js-crud/     # Frontend: SPA React 18 + Vite + React Router
+```
 
-#SERVER-SIDE (Laravel 10)
+## Menjalankan Backend (Laravel 12)
 
-**2.  Go to the laravel-10-api**
+```bash
+cd laravel-10-api
+composer install
+cp .env.example .env
+php artisan key:generate
+# sesuaikan koneksi database di .env
+php artisan migrate
+php artisan serve        # API di http://localhost:8000
+```
 
-      cd laravel-10-api
-      
-**3.  Generate key App**
+## Menjalankan Frontend (React)
 
-      php artisan key:generate
-      
-**4.  Setup Your database in file ./env**
+```bash
+cd react-js-crud
+npm install
+npm run dev              # http://localhost:5173
+```
 
-      Just customize the following lines 
-      
-        DB_DATABASE={Yout Database Name}
-        DB_USERNAME={Your Database Username}
-        DB_PASSWORD={Your Database Password}
-        
-**5.  Database Migration**
+Frontend memanggil API Laravel via Axios (endpoint CRUD `/api/posts`).
 
-      php artisan migrate or php artisan migrate:fresh
-      
-**6.  Link the storage**
+## Tech Stack
 
-      php artisan storage:link
+| Bagian | Teknologi |
+|---|---|
+| Backend | Laravel 12 · MySQL · PHP ≥ 8.2 |
+| Frontend | React 18 · Vite · React Router 6 · Axios |
 
-#CLIENT-SIDE
+## Riwayat
 
-**7.  Enter the react-js-crud folder**
-
-      cd ..
-      cd react-js-crud
-
-**8.  Install node_modules**
-
-      npm i or npm install
-
-**9.  Install the following package**
-
-      npm i react-router-dom axios
+Dibangun tahun 2023 dengan Laravel 10 (asal nama repo); backend dipugar ke **Laravel 12** (Oktober 2026) — kompatibel PHP 8.2–8.5, migrasi & test terverifikasi, build React tervalidasi.
