@@ -1,0 +1,25 @@
+# Layanan pendukung: Redis (cache + riwayat chatbot) dan n8n (otak chatbot)
+#   docker compose up -d
+services:
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+  n8n:
+    image: n8nio/n8n:latest
+    restart: unless-stopped
+    ports:
+      - "5678:5678"
+    environment:
+      - N8N_SECURE_COOKIE=false
+      - GENERIC_TIMEZONE=Asia/Jakarta
+    volumes:
+      - n8n_data:/home/node/.n8n
+
+volumes:
+  redis_data:
+  n8n_data:

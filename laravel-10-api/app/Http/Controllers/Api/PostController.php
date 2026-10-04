@@ -6,6 +6,7 @@ use App\Models\Post;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\PostResource;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
@@ -18,10 +19,14 @@ class PostController extends Controller
      */
     public function index()
     {
-        //get all posts
-        $posts = Post::latest()->paginate(5);
+        // Cache berversi (Redis): daftar post di-cache per halaman,
+        // dan "versi" dinaikkan setiap ada perubahan data (cache busting).
+        $ver = Cache::rememberForever('posts:ver', fn() => 1);
+        $page = request('page', 1);
 
-        //return collection of posts as a resource
+        $posts = Cache::remember("posts:index:v{$ver}:p{$page}", 300,
+            fn() => Post::latest()->paginate(5));
+
         return new PostResource(true, 'List Data Posts', $posts);
     }
 
@@ -57,6 +62,8 @@ class PostController extends Controller
         ]);
 
         //return response
+
+        Cache::increment('posts:ver'); // segarkan cache daftar post
         return new PostResource(true, 'Data Post Berhasil Ditambahkan!', $post);
     }
 
@@ -118,6 +125,8 @@ class PostController extends Controller
         }
 
         //return response
+
+        Cache::increment('posts:ver'); // segarkan cache daftar post
         return new PostResource(true, 'Data Post Berhasil Diubah!', $post);
     }
 
@@ -136,6 +145,8 @@ class PostController extends Controller
         $post->delete();
 
         //return response
+
+        Cache::increment('posts:ver'); // segarkan cache daftar post
         return new PostResource(true, 'Data Post Berhasil Dihapus!', null);
     }
 }

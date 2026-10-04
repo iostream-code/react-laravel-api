@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\ChatController;
 use App\Http\Controllers\Api\PostController;
 
 /*
@@ -20,3 +21,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::apiResource('/post', PostController::class);
+
+// Chatbot (riwayat di Redis/cache; otak via n8n bila dikonfigurasi)
+Route::post('/chat', [ChatController::class, 'kirim']);
+Route::get('/chat/{sessionId}', [ChatController::class, 'riwayat']);
+Route::delete('/chat/{sessionId}', [ChatController::class, 'hapus']);
