@@ -8,6 +8,10 @@ react-laravel-api/
 └── react-js-crud/     # Frontend: SPA React 18 + Vite + React Router
 ```
 
+## Tampilan
+
+![Beranda SPA](docs/screenshots/reactcrud-home.png)
+
 ## Menjalankan Backend (Laravel 12)
 
 ```bash
